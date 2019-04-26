@@ -61,7 +61,10 @@ export class SlackTableFormatter {
       // display field name in a pretty, human readable fashion
       const label = Object.keys(result.data[0])[0].split(".")[1].replace(/_/g, " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})
 
-      const text = `*${label}*\n*${rendered}*${share}`
+      // special case: single value has a % change qualifier
+      const changeLabel = datum.change_from_last_month ? this.renderString(datum.change_from_last_month) : undefined
+
+      const text = `*${label}*\n*${rendered}*` + (changeLabel ? `\n*${changeLabel}* change from last month`: ``) + `${share}`
 
       const attachment = {text, fallback: rendered, color: "#64518A", mrkdwn_in: ["text"]}
       this.addSlackButtons(field, datum, attachment)
