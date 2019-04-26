@@ -3,6 +3,7 @@ import { ReplyContext } from "../reply_context"
 import { Command } from "./command"
 
 const TRASH_REGEX = new RegExp("how do you stay so positive in such a horrible world?")
+const DROP_REGEX = new RegExp("drop")
 
 const AFFIRMATIONS = [
   "I am the architect of my life. I am the creator of my reality.",
@@ -164,6 +165,30 @@ export class TrashCommand extends Command {
     if (match) {
 
       context.replyPublic(AFFIRMATIONS[Math.floor(Math.random() * AFFIRMATIONS.length)])
+
+      return true
+    } else if ( context.sourceMessage.text.match(DROP_REGEX) ){
+      context.replyPublic(`
+\`\`\`
+                                                                     
+          ((((                                                       
+          (((((                                                      
+           (((((                                                     
+         /(/((((            (         .//                *(/         
+     ((((((((((((      ((((((,    (((((((((((        (((((((((((     
+   (((((((((((((((   ((((((((    ((((((((((((((    (((((((((((((((   
+  (((((       (((((  ((((       ((((       (((((  (((((       (((((  
+  ((((         ((((  (((((     ((((/        ((((  ((((         ((((  
+  ((((        (((((   ((((/    (((((        ((((  (((((        ((((  
+   (((((     (((((     ((((     (((((,    ((((((   (((((     (((((   
+    (((((((((((((      (((((     (((((((((((((      (((((((((((((    
+       (((((((          (((         ((((((((        ((((((((((       
+                                                     ((((,           
+                                                      ((((           
+                                                       ((((          
+                                                       ((            
+\`\`\`
+      `)
 
       return true
     } else {
