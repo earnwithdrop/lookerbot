@@ -1,6 +1,4 @@
 import config from "../config"
-import { Looker } from "../looker"
-import { LookFinder } from "../repliers/look_finder"
 import { ReplyContext } from "../reply_context"
 import { Command } from "./command"
 
