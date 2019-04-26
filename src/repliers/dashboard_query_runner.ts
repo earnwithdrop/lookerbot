@@ -23,8 +23,6 @@ export class DashboardQueryRunner extends QueryRunner {
       throw new Error("Dashboard has no elements.")
     }
 
-    // Disable Loading messages
-    // LOOKER_SLACKBOT_LOADING_MESSAGES=false
     // if (elements.length > 1) {
     //   throw new Error("Dashboards with more than one element aren't currently supported for Slack commands.")
     // }

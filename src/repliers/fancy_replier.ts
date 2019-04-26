@@ -78,9 +78,9 @@ export abstract class FancyReplier {
     }
 
     if (this.loadingMessage) {
-
       // Hacky stealth update of message to preserve chat order
       const params = {ts: this.loadingMessage.ts, channel: this.replyContext.sourceMessage.channel}
+      this.loadingMessage = undefined;
 
       const update = _.extend(params, sendableMsg)
       update.attachments = update.attachments ? JSON.stringify(update.attachments) : null
