@@ -4,6 +4,7 @@ import { Command } from "./command"
 
 const TRASH_REGEX = new RegExp("how do you stay so positive in such a horrible world?")
 const DROP_REGEX = new RegExp("drop")
+const TINGZ_REGEX = new RegExp("tingz")
 
 const AFFIRMATIONS = [
   "I am the architect of my life. I am the creator of my reality.",
@@ -189,6 +190,10 @@ export class TrashCommand extends Command {
                                                        ((            
 \`\`\`
       `)
+
+      return true
+    } else if ( context.sourceMessage.text.match(TINGZ_REGEX) ) {
+      context.replyPublic(`https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsaaKlNONqzeWrQ3_w5CHi1SMIpmFMCMsPY80ItvHEflwqckfV`)
 
       return true
     } else {
