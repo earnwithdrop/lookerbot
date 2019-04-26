@@ -57,7 +57,12 @@ export class SlackTableFormatter {
       const share = shareUrl ? `\n${shareUrl}` : ""
       const datum = result.data[0]
       const rendered = this.renderField(field, datum)
-      const text = `*${rendered}*${share}`
+
+      // display field name in a pretty, human readable fashion
+      const label = Object.keys(result.data[0])[0].split(".")[1].replace(/_/g, " ").replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();})
+
+      const text = `*${label}*\n*${rendered}*${share}`
+
       const attachment = {text, fallback: rendered, color: "#64518A", mrkdwn_in: ["text"]}
       this.addSlackButtons(field, datum, attachment)
 
