@@ -27,7 +27,7 @@ export class CustomCommand extends Command {
       })
 
       for (const filterMap of mappedDashboardFilters) {
-        filters[filterMap[0]] = filterMap[1]
+        filters[filterMap[0].name] = filterMap[1]
       }
 
       const runner = new DashboardQueryRunner(context, matchedCommand.dashboard, filters)
