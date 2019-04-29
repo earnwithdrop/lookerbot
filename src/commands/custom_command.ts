@@ -14,14 +14,18 @@ export class CustomCommand extends Command {
     if (matchedCommand) {
 
       const { dashboard } = matchedCommand
-      const query = context.sourceMessage.text.slice(matchedCommand.name.length).replace(/\s+/g, ' ').trim().split(' ')
+      let query = context.sourceMessage.text.slice(matchedCommand.name.length).replace(/\s+/g, ' ').trim().split(' ')
       normalizedText.indexOf(matchedCommand.name)
+
 
       context.looker = matchedCommand.looker
 
       const filters: {[key: string]: string} = {}
 
       const dashboardFilters = dashboard.dashboard_filters || dashboard.filters
+      if (dashboardFilters.length === 1){
+        query = [query.join(' ')]
+      }
       const mappedDashboardFilters = dashboardFilters.map((element, index) => {
         return [element, query[index]]
       })
