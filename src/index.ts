@@ -26,6 +26,7 @@ const commands = [
   require("./commands/custom_command").CustomCommand,
   require("./commands/trash_command").TrashCommand,
   require("./commands/slam_poetry_command").SlamPoetryCommand,
+  require("./commands/typing_command").TypingCommand,
   require("./commands/help_command").HelpCommand,
 ]
 
