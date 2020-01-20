@@ -7,10 +7,10 @@ spec:
   ports:
     - port: 80
       name: http
-      targetPort: 80
+      targetPort: 3333
     - port: 443
       name: https
-      targetPort: 80
+      targetPort: 3333
   selector:
     app: lookerbot
     environment: production
@@ -95,7 +95,7 @@ spec:
           cpu: 1500m
        ports:
         - name: web-server
-          containerPort: 80
+          containerPort: 3333
        envFrom:
         - configMapRef:
             name: lookerbot

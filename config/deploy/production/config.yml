@@ -6,3 +6,6 @@ metadata:
 data:
   LOOKER_API_BASE_URL: "https://earnwithdrop.looker.com:19999/api/3.1/"
   LOOKER_URL: "https://earnwithdrop.looker.com"
+  SLACKBOT_S3_BUCKET: drop-lookerbot
+  SLACKBOT_S3_BUCKET_REGION: us-east-1
+  LOOKER_SLACKBOT_EXPAND_URLS: "true"
