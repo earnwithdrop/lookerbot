@@ -74,25 +74,13 @@ spec:
      - name: lookerbot
        image: 344834474076.dkr.ecr.us-east-1.amazonaws.com/drop/lookerbot:<%= current_sha %>
        args: ["yarn", "start"]
-       # livenessProbe:
-       #  httpGet:
-       #    path: /health
-       #    port: web-server
-       #  initialDelaySeconds: 10
-       #  timeoutSeconds: 15
-       # readinessProbe:
-       #  httpGet:
-       #    path: /health
-       #    port: web-server
-       #  initialDelaySeconds: 10
-       #  timeoutSeconds: 60
        resources:
         requests:
-          memory: 2Gi
-          cpu: 500m
+          memory: 512Mi
+          cpu: 100m
         limits:
-          memory: 3Gi
-          cpu: 1500m
+          memory: 1Gi
+          cpu: 200m
        ports:
         - name: web-server
           containerPort: 3333
