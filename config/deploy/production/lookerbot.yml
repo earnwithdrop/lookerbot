@@ -1,0 +1,112 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lookerbot
+  namespace: lookerbot
+spec:
+  ports:
+    - port: 80
+      name: http
+      targetPort: 80
+    - port: 443
+      name: https
+      targetPort: 80
+  selector:
+    app: lookerbot
+    environment: production
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: lookerbot
+  namespace: lookerbot
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:344834474076:certificate/e0ff52ca-aa30-4d8c-9a2a-95f590a10898,arn:aws:acm:us-east-1:344834474076:certificate/011bfb2b-e62e-4d3e-8f60-77bff3f85068,arn:aws:acm:us-east-1:344834474076:certificate/ec3de546-e718-4a3b-8ad0-0da0244e54bd
+    alb.ingress.kubernetes.io/subnets: subnet-1716f139,subnet-5e63ca14,subnet-fa24c1a6,subnet-36b34251,subnet-1cf0f023,subnet-b1ca70be
+    alb.ingress.kubernetes.io/security-groups: sg-fdd6e58d
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80,"HTTPS": 443}]'
+    external-dns.alpha.kubernetes.io/hostname: lookerbot.joindrop.com
+    kubernetes.io/ingress.class: alb
+  labels:
+    app: web-ingress
+spec:
+  rules:
+  - host: lookerbot.joindrop.com
+    http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: lookerbot
+          servicePort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: lookerbot
+  namespace: lookerbot
+  labels:
+    app: lookerbot
+    environment: production
+    track: stable
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 50%
+  selector:
+    matchLabels:
+      app: lookerbot
+      environment: production
+      track: stable
+  template:
+    metadata:
+      labels:
+        app: lookerbot
+        version: <%= current_sha %>
+        environment: production
+        track: stable
+      annotations:
+        iam.amazonaws.com/role: arn:aws:iam::344834474076:role/Lookerbot
+    spec:
+     containers:
+     - name: lookerbot
+       image: 344834474076.dkr.ecr.us-east-1.amazonaws.com/drop/lookerbot:<%= current_sha %>
+       args: ["yarn", "start"]
+       # livenessProbe:
+       #  httpGet:
+       #    path: /health
+       #    port: web-server
+       #  initialDelaySeconds: 10
+       #  timeoutSeconds: 15
+       # readinessProbe:
+       #  httpGet:
+       #    path: /health
+       #    port: web-server
+       #  initialDelaySeconds: 10
+       #  timeoutSeconds: 60
+       resources:
+        requests:
+          memory: 2Gi
+          cpu: 500m
+        limits:
+          memory: 3Gi
+          cpu: 1500m
+       ports:
+        - name: web-server
+          containerPort: 80
+       envFrom:
+        - configMapRef:
+            name: lookerbot
+        - secretRef:
+            name: lookerbot
+       env:
+        - name: STATSD_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
